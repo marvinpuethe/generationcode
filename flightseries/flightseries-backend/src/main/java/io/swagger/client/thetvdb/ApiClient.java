@@ -11,7 +11,7 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.internal.http.HttpMethod;
@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
 
 public class ApiClient {
 
-    private String basePath = "https://localhost";
+    private String basePath = "https://api.thetvdb.com";
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;

@@ -11,66 +11,81 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.ResponseBody;
+import java.util.Map;
+import java.util.List;
 
-import java.io.IOException;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2018-10-27T12:49:47.532Z")
+public class ApiException extends Exception {
+    private int code = 0;
+    private Map<String, List<String>> responseHeaders = null;
+    private String responseBody = null;
 
-import okio.Buffer;
-import okio.BufferedSource;
-import okio.ForwardingSource;
-import okio.Okio;
-import okio.Source;
+    public ApiException() {}
 
-public class ProgressResponseBody extends ResponseBody {
-
-    public interface ProgressListener {
-        void update(long bytesRead, long contentLength, boolean done);
+    public ApiException(Throwable throwable) {
+        super(throwable);
     }
 
-    private final ResponseBody responseBody;
-    private final ProgressListener progressListener;
-    private BufferedSource bufferedSource;
+    public ApiException(String message) {
+        super(message);
+    }
 
-    public ProgressResponseBody(ResponseBody responseBody, ProgressListener progressListener) {
+    public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders, String responseBody) {
+        super(message, throwable);
+        this.code = code;
+        this.responseHeaders = responseHeaders;
         this.responseBody = responseBody;
-        this.progressListener = progressListener;
     }
 
-    @Override
-    public MediaType contentType() {
-        return responseBody.contentType();
+    public ApiException(String message, int code, Map<String, List<String>> responseHeaders, String responseBody) {
+        this(message, (Throwable) null, code, responseHeaders, responseBody);
     }
 
-    @Override
-    public long contentLength() throws IOException {
-        return responseBody.contentLength();
+    public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders) {
+        this(message, throwable, code, responseHeaders, null);
     }
 
-    @Override
-    public BufferedSource source() throws IOException {
-        if (bufferedSource == null) {
-            bufferedSource = Okio.buffer(source(responseBody.source()));
-        }
-        return bufferedSource;
+    public ApiException(int code, Map<String, List<String>> responseHeaders, String responseBody) {
+        this((String) null, (Throwable) null, code, responseHeaders, responseBody);
     }
 
-    private Source source(Source source) {
-        return new ForwardingSource(source) {
-            long totalBytesRead = 0L;
+    public ApiException(int code, String message) {
+        super(message);
+        this.code = code;
+    }
 
-            @Override
-            public long read(Buffer sink, long byteCount) throws IOException {
-                long bytesRead = super.read(sink, byteCount);
-                // read() returns the number of bytes read, or -1 if this source is exhausted.
-                totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-                progressListener.update(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
-                return bytesRead;
-            }
-        };
+    public ApiException(int code, String message, Map<String, List<String>> responseHeaders, String responseBody) {
+        this(code, message);
+        this.responseHeaders = responseHeaders;
+        this.responseBody = responseBody;
+    }
+
+    /**
+     * Get the HTTP status code.
+     *
+     * @return HTTP status code
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * Get the HTTP response headers.
+     *
+     * @return A map of list of string
+     */
+    public Map<String, List<String>> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    /**
+     * Get the HTTP response body.
+     *
+     * @return Response body in the form of string
+     */
+    public String getResponseBody() {
+        return responseBody;
     }
 }
-
-

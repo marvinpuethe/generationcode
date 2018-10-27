@@ -11,45 +11,66 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2018-10-27T12:49:47.532Z")
-public class StringUtil {
-  /**
-   * Check if the given array contains the given value (with case-insensitive comparison).
-   *
-   * @param array The array
-   * @param value The value to search
-   * @return true if the array contains the value
-   */
-  public static boolean containsIgnoreCase(String[] array, String value) {
-    for (String str : array) {
-      if (value == null && str == null) return true;
-      if (value != null && value.equalsIgnoreCase(str)) return true;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.ResponseBody;
+
+import java.io.IOException;
+
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.ForwardingSource;
+import okio.Okio;
+import okio.Source;
+
+public class ProgressResponseBody extends ResponseBody {
+
+    public interface ProgressListener {
+        void update(long bytesRead, long contentLength, boolean done);
     }
-    return false;
-  }
 
-  /**
-   * Join an array of strings with the given separator.
-   * <p>
-   * Note: This might be replaced by utility method from commons-lang or guava someday
-   * if one of those libraries is added as dependency.
-   * </p>
-   *
-   * @param array     The array of strings
-   * @param separator The separator
-   * @return the resulting string
-   */
-  public static String join(String[] array, String separator) {
-    int len = array.length;
-    if (len == 0) return "";
+    private final ResponseBody responseBody;
+    private final ProgressListener progressListener;
+    private BufferedSource bufferedSource;
 
-    StringBuilder out = new StringBuilder();
-    out.append(array[0]);
-    for (int i = 1; i < len; i++) {
-      out.append(separator).append(array[i]);
+    public ProgressResponseBody(ResponseBody responseBody, ProgressListener progressListener) {
+        this.responseBody = responseBody;
+        this.progressListener = progressListener;
     }
-    return out.toString();
-  }
+
+    @Override
+    public MediaType contentType() {
+        return responseBody.contentType();
+    }
+
+    @Override
+    public long contentLength() throws IOException {
+        return responseBody.contentLength();
+    }
+
+    @Override
+    public BufferedSource source() throws IOException {
+        if (bufferedSource == null) {
+            bufferedSource = Okio.buffer(source(responseBody.source()));
+        }
+        return bufferedSource;
+    }
+
+    private Source source(Source source) {
+        return new ForwardingSource(source) {
+            long totalBytesRead = 0L;
+
+            @Override
+            public long read(Buffer sink, long byteCount) throws IOException {
+                long bytesRead = super.read(sink, byteCount);
+                // read() returns the number of bytes read, or -1 if this source is exhausted.
+                totalBytesRead += bytesRead != -1 ? bytesRead : 0;
+                progressListener.update(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+                return bytesRead;
+            }
+        };
+    }
 }
+
+

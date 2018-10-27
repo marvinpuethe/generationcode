@@ -15,7 +15,7 @@ package io.swagger.client.thetvdb.auth;
 
 import com.squareup.okhttp.Credentials;
 
-import io.swagger.thetvdb.client.Pair;
+import io.swagger.client.thetvdb.Pair;
 
 import java.util.Map;
 import java.util.List;

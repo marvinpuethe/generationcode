@@ -11,66 +11,70 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.*;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.GzipSink;
+import okio.Okio;
 
 import java.io.IOException;
 
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.ForwardingSink;
-import okio.Okio;
-import okio.Sink;
+/**
+ * Encodes request bodies using gzip.
+ *
+ * Taken from https://github.com/square/okhttp/issues/350
+ */
+class GzipRequestInterceptor implements Interceptor {
+    @Override public Response intercept(Chain chain) throws IOException {
+        Request originalRequest = chain.request();
+        if (originalRequest.body() == null || originalRequest.header("Content-Encoding") != null) {
+            return chain.proceed(originalRequest);
+        }
 
-public class ProgressRequestBody extends RequestBody {
-
-    public interface ProgressRequestListener {
-        void onRequestProgress(long bytesWritten, long contentLength, boolean done);
+        Request compressedRequest = originalRequest.newBuilder()
+                                                   .header("Content-Encoding", "gzip")
+                                                   .method(originalRequest.method(), forceContentLength(gzip(originalRequest.body())))
+                                                   .build();
+        return chain.proceed(compressedRequest);
     }
 
-    private final RequestBody requestBody;
-
-    private final ProgressRequestListener progressListener;
-
-    public ProgressRequestBody(RequestBody requestBody, ProgressRequestListener progressListener) {
-        this.requestBody = requestBody;
-        this.progressListener = progressListener;
-    }
-
-    @Override
-    public MediaType contentType() {
-        return requestBody.contentType();
-    }
-
-    @Override
-    public long contentLength() throws IOException {
-        return requestBody.contentLength();
-    }
-
-    @Override
-    public void writeTo(BufferedSink sink) throws IOException {
-        BufferedSink bufferedSink = Okio.buffer(sink(sink));
-        requestBody.writeTo(bufferedSink);
-        bufferedSink.flush();
-    }
-
-    private Sink sink(Sink sink) {
-        return new ForwardingSink(sink) {
-
-            long bytesWritten = 0L;
-            long contentLength = 0L;
+    private RequestBody forceContentLength(final RequestBody requestBody) throws IOException {
+        final Buffer buffer = new Buffer();
+        requestBody.writeTo(buffer);
+        return new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return requestBody.contentType();
+            }
 
             @Override
-            public void write(Buffer source, long byteCount) throws IOException {
-                super.write(source, byteCount);
-                if (contentLength == 0) {
-                    contentLength = contentLength();
-                }
+            public long contentLength() {
+                return buffer.size();
+            }
 
-                bytesWritten += byteCount;
-                progressListener.onRequestProgress(bytesWritten, contentLength, bytesWritten == contentLength);
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+                sink.write(buffer.snapshot());
+            }
+        };
+    }
+
+    private RequestBody gzip(final RequestBody body) {
+        return new RequestBody() {
+            @Override public MediaType contentType() {
+                return body.contentType();
+            }
+
+            @Override public long contentLength() {
+                return -1; // We don't know the compressed length in advance!
+            }
+
+            @Override public void writeTo(BufferedSink sink) throws IOException {
+                BufferedSink gzipSink = Okio.buffer(new GzipSink(sink));
+                body.writeTo(gzipSink);
+                gzipSink.close();
             }
         };
     }

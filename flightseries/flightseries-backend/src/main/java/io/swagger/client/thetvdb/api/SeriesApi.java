@@ -13,6 +13,14 @@
 
 package io.swagger.client.thetvdb.api;
 
+import io.swagger.client.thetvdb.ApiCallback;
+import io.swagger.client.thetvdb.ApiClient;
+import io.swagger.client.thetvdb.ApiException;
+import io.swagger.client.thetvdb.ApiResponse;
+import io.swagger.client.thetvdb.Configuration;
+import io.swagger.client.thetvdb.Pair;
+import io.swagger.client.thetvdb.ProgressRequestBody;
+import io.swagger.client.thetvdb.ProgressResponseBody;
 import io.swagger.client.thetvdb.model.FilterKeys;
 import io.swagger.client.thetvdb.model.NotAuthorized;
 import io.swagger.client.thetvdb.model.NotFound;
@@ -25,14 +33,6 @@ import io.swagger.client.thetvdb.model.SeriesEpisodesSummary;
 import io.swagger.client.thetvdb.model.SeriesImageQueryResults;
 import io.swagger.client.thetvdb.model.SeriesImagesCounts;
 import io.swagger.client.thetvdb.model.SeriesImagesQueryParams;
-import io.swagger.thetvdb.client.ApiCallback;
-import io.swagger.thetvdb.client.ApiClient;
-import io.swagger.thetvdb.client.ApiException;
-import io.swagger.thetvdb.client.ApiResponse;
-import io.swagger.thetvdb.client.Configuration;
-import io.swagger.thetvdb.client.Pair;
-import io.swagger.thetvdb.client.ProgressRequestBody;
-import io.swagger.thetvdb.client.ProgressResponseBody;
 
 import com.google.gson.reflect.TypeToken;
 

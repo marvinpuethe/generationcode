@@ -11,7 +11,7 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
 import java.io.IOException;
 

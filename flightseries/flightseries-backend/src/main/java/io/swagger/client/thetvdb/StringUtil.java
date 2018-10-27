@@ -11,49 +11,45 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
-import java.util.List;
-import java.util.Map;
-
-/**
- * API response returned by API call.
- *
- * @param <T> The type of data that is deserialized from response body
- */
-public class ApiResponse<T> {
-    final private int statusCode;
-    final private Map<String, List<String>> headers;
-    final private T data;
-
-    /**
-     * @param statusCode The status code of HTTP response
-     * @param headers The headers of HTTP response
-     */
-    public ApiResponse(int statusCode, Map<String, List<String>> headers) {
-        this(statusCode, headers, null);
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2018-10-27T12:49:47.532Z")
+public class StringUtil {
+  /**
+   * Check if the given array contains the given value (with case-insensitive comparison).
+   *
+   * @param array The array
+   * @param value The value to search
+   * @return true if the array contains the value
+   */
+  public static boolean containsIgnoreCase(String[] array, String value) {
+    for (String str : array) {
+      if (value == null && str == null) return true;
+      if (value != null && value.equalsIgnoreCase(str)) return true;
     }
+    return false;
+  }
 
-    /**
-     * @param statusCode The status code of HTTP response
-     * @param headers The headers of HTTP response
-     * @param data The object deserialized from response bod
-     */
-    public ApiResponse(int statusCode, Map<String, List<String>> headers, T data) {
-        this.statusCode = statusCode;
-        this.headers = headers;
-        this.data = data;
-    }
+  /**
+   * Join an array of strings with the given separator.
+   * <p>
+   * Note: This might be replaced by utility method from commons-lang or guava someday
+   * if one of those libraries is added as dependency.
+   * </p>
+   *
+   * @param array     The array of strings
+   * @param separator The separator
+   * @return the resulting string
+   */
+  public static String join(String[] array, String separator) {
+    int len = array.length;
+    if (len == 0) return "";
 
-    public int getStatusCode() {
-        return statusCode;
+    StringBuilder out = new StringBuilder();
+    out.append(array[0]);
+    for (int i = 1; i < len; i++) {
+      out.append(separator).append(array[i]);
     }
-
-    public Map<String, List<String>> getHeaders() {
-        return headers;
-    }
-
-    public T getData() {
-        return data;
-    }
+    return out.toString();
+  }
 }

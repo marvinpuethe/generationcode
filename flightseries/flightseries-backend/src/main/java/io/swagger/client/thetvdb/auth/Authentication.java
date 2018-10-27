@@ -15,7 +15,7 @@ package io.swagger.client.thetvdb.auth;
 
 import java.util.Map;
 
-import io.swagger.thetvdb.client.Pair;
+import io.swagger.client.thetvdb.Pair;
 
 import java.util.List;
 

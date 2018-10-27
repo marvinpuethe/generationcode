@@ -11,42 +11,49 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2018-10-27T12:49:47.532Z")
-public class Pair {
-    private String name = "";
-    private String value = "";
+import java.util.List;
+import java.util.Map;
 
-    public Pair (String name, String value) {
-        setName(name);
-        setValue(value);
+/**
+ * API response returned by API call.
+ *
+ * @param <T> The type of data that is deserialized from response body
+ */
+public class ApiResponse<T> {
+    final private int statusCode;
+    final private Map<String, List<String>> headers;
+    final private T data;
+
+    /**
+     * @param statusCode The status code of HTTP response
+     * @param headers The headers of HTTP response
+     */
+    public ApiResponse(int statusCode, Map<String, List<String>> headers) {
+        this(statusCode, headers, null);
     }
 
-    private void setName(String name) {
-        if (!isValidString(name)) return;
-
-        this.name = name;
+    /**
+     * @param statusCode The status code of HTTP response
+     * @param headers The headers of HTTP response
+     * @param data The object deserialized from response bod
+     */
+    public ApiResponse(int statusCode, Map<String, List<String>> headers, T data) {
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.data = data;
     }
 
-    private void setValue(String value) {
-        if (!isValidString(value)) return;
-
-        this.value = value;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public String getName() {
-        return this.name;
+    public Map<String, List<String>> getHeaders() {
+        return headers;
     }
 
-    public String getValue() {
-        return this.value;
-    }
-
-    private boolean isValidString(String arg) {
-        if (arg == null) return false;
-        if (arg.trim().isEmpty()) return false;
-
-        return true;
+    public T getData() {
+        return data;
     }
 }

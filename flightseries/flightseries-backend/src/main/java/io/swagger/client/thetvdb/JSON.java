@@ -11,7 +11,7 @@
  */
 
 
-package io.swagger.thetvdb.client;
+package io.swagger.client.thetvdb;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
