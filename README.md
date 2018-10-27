@@ -21,7 +21,7 @@ Info: The OMDb API is a RESTful web service to obtain movie information, all con
 
 > Flightseries ist eine Webapp, mit der Flugpassagiere für die gesamte Reisedauer ein Serienprogramm automatisiert zusammenstellen können, das auf Warte- und Flugzeiten abgestimmt wird.
 
-siehe auch die Präsentation: [docs/Pr%C3%A4sentation/Flightseries.pptx]
+siehe auch die Präsentation: [docs/Präsentation/Flightseries.pptx](docs/Pr%C3%A4sentation/Flightseries.pptx)
 
 ## das Flightseries-Team
 
