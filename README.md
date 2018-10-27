@@ -17,13 +17,13 @@ Info: You've found the most accurate source for everything TV. Our information c
 
 Info: The OMDb API is a RESTful web service to obtain movie information, all content and images on the site are contributed and maintained by our users.
 
-## Vision:
+## die Vision
 
 > Flightseries ist eine Webapp, mit der Flugpassagiere für die gesamte Reisedauer ein Serienprogramm automatisiert zusammenstellen können, das auf Warte- und Flugzeiten abgestimmt wird.
 
-[PP-Präsentation](docs/Pr%C3%A4sentation/Flightseries.pptx)
+siehe auch die Präsentation: [docs/Pr%C3%A4sentation/Flightseries.pptx]
 
-## Team
+## das Flightseries-Team
 
 ![Das Flightseries Team](docs/images/team.jpg)
 
