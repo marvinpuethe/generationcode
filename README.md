@@ -1,4 +1,6 @@
-# Generation Code @ MT-AG
+# Flightseries
+schedule your favourite series for your flight
+(Generation Code @ MT-AG)
 
 ## APIs
 
@@ -16,10 +18,11 @@ Info: The OMDb API is a RESTful web service to obtain movie information, all con
 
 ## Vision:
 
-*Was:* Flightseries ist eine Webapp, mit der
+> Flightseries ist eine Webapp, mit der Flugpassagiere für die gesamte Reisedauer ein Serienprogramm automatisiert zusammenstellen können, das auf Warte- und Flugzeiten abgestimmt wird.
 
-*Wer:* Flugpassagiere
+[PP-Präsentation](docs/Pr%C3%A4sentation/Flightseries.pptx)
 
-*Was:* für die gesamte Reisedauer ein Serienprogramm automatisiert zusammenstellen können, das auf Warte- und Flugzeiten abgestimmt wird. 
+## Team
 
-*Mehrwert:* eigene Vorlieben; Verfügbarkeit der Serien im Flugzeug; Verfügbarkeit der Serien für privaten Nutzeraccount; Einbeziehung der aktuellen Flugzeiten; Aktualisierung jederzeit möglich
+![Das Flightseries Team](docs/images/team.jpg)
+
